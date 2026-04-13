@@ -1,64 +1,67 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { recentOrders } from "@/data/mock-data";
 import { ShoppingCart } from "lucide-react";
-import { cn } from "@/lib/utils";
 
-const statusColors: Record<string, string> = {
-  fulfilled: "bg-emerald-500/20 text-emerald-400",
-  pending: "bg-amber-500/20 text-amber-400",
-  refunded: "bg-red-500/20 text-red-400",
-  partially_fulfilled: "bg-blue-500/20 text-blue-400",
-};
-
-const statusLabels: Record<string, string> = {
-  fulfilled: "Fulfilled",
-  pending: "Pending",
-  refunded: "Refunded",
-  partially_fulfilled: "Partial",
+const statusStyles: Record<string, { color: string; bg: string; label: string }> = {
+  fulfilled: { color: "#34d399", bg: "rgba(52,211,153,0.1)", label: "Fulfilled" },
+  pending: { color: "#fbbf24", bg: "rgba(251,191,36,0.1)", label: "Pending" },
+  refunded: { color: "#f87171", bg: "rgba(248,113,113,0.1)", label: "Refunded" },
+  partially_fulfilled: { color: "#60a5fa", bg: "rgba(96,165,250,0.1)", label: "Partial" },
 };
 
 export function RecentOrders() {
   return (
-    <Card className="bg-zinc-900/50 border-zinc-800">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-sm font-medium text-zinc-300 flex items-center gap-2">
-          <ShoppingCart className="w-4 h-4 text-emerald-400" />
+    <div className="sp-surface rounded-2xl p-5">
+      <div className="flex items-center gap-2 mb-4">
+        <ShoppingCart className="w-4 h-4" style={{ color: "var(--sp-accent)" }} />
+        <h3
+          className="text-sm font-semibold font-[family-name:var(--font-heading)]"
+          style={{ color: "var(--sp-text)" }}
+        >
           Recent Orders
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-2">
-          {recentOrders.map((order) => (
+        </h3>
+      </div>
+      <div className="space-y-2">
+        {recentOrders.map((order, i) => {
+          const st = statusStyles[order.status];
+          return (
             <div
               key={order.id}
-              className="flex items-center gap-3 p-3 rounded-lg bg-zinc-800/30 border border-zinc-700/30"
+              className="sp-card-hover flex items-center gap-3 p-3 rounded-xl animate-fade-in-up"
+              style={{
+                background: "var(--sp-accent-subtle)",
+                border: "1px solid var(--sp-border)",
+                animationDelay: `${i * 0.04}s`,
+              }}
             >
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-zinc-200">
+                  <span
+                    className="text-[13px] font-semibold font-[family-name:var(--font-heading)]"
+                    style={{ color: "var(--sp-text)" }}
+                  >
                     {order.orderNumber}
                   </span>
-                  <Badge
-                    className={cn(
-                      "text-[10px] h-4 border-0",
-                      statusColors[order.status]
-                    )}
+                  <span
+                    className="text-[10px] font-bold px-2 py-0.5 rounded-md"
+                    style={{ color: st.color, background: st.bg }}
                   >
-                    {statusLabels[order.status]}
-                  </Badge>
+                    {st.label}
+                  </span>
                 </div>
-                <p className="text-xs text-zinc-500 mt-0.5">
+                <p className="text-[11px] mt-0.5" style={{ color: "var(--sp-text-muted)" }}>
                   {order.customer} · {order.city}, {order.country}
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-sm font-semibold text-white">
+                <p
+                  className="text-[13px] font-bold font-[family-name:var(--font-heading)]"
+                  style={{ color: "var(--sp-text)" }}
+                >
                   ${order.total.toFixed(2)}
                 </p>
-                <p className="text-xs text-zinc-500">
+                <p className="text-[10px]" style={{ color: "var(--sp-text-muted)" }}>
                   {new Date(order.createdAt).toLocaleDateString("en-US", {
                     month: "short",
                     day: "numeric",
@@ -68,9 +71,9 @@ export function RecentOrders() {
                 </p>
               </div>
             </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+          );
+        })}
+      </div>
+    </div>
   );
 }

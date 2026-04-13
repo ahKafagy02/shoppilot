@@ -1,77 +1,61 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { alerts } from "@/data/mock-data";
 import { Bell, AlertTriangle, CheckCircle, Info, XCircle } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 const typeConfig = {
-  critical: {
-    icon: XCircle,
-    color: "text-red-400",
-    bg: "bg-red-400/10",
-    border: "border-red-900/30",
-  },
-  warning: {
-    icon: AlertTriangle,
-    color: "text-amber-400",
-    bg: "bg-amber-400/10",
-    border: "border-amber-900/30",
-  },
-  success: {
-    icon: CheckCircle,
-    color: "text-emerald-400",
-    bg: "bg-emerald-400/10",
-    border: "border-emerald-900/30",
-  },
-  info: {
-    icon: Info,
-    color: "text-blue-400",
-    bg: "bg-blue-400/10",
-    border: "border-blue-900/30",
-  },
+  critical: { icon: XCircle, color: "#f87171", bg: "rgba(248,113,113,0.08)", border: "rgba(248,113,113,0.15)" },
+  warning: { icon: AlertTriangle, color: "#fbbf24", bg: "rgba(251,191,36,0.08)", border: "rgba(251,191,36,0.15)" },
+  success: { icon: CheckCircle, color: "#34d399", bg: "rgba(52,211,153,0.08)", border: "rgba(52,211,153,0.15)" },
+  info: { icon: Info, color: "#60a5fa", bg: "rgba(96,165,250,0.08)", border: "rgba(96,165,250,0.15)" },
 };
 
 export function AIAlerts() {
   return (
-    <Card className="bg-zinc-900/50 border-zinc-800">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-sm font-medium text-zinc-300 flex items-center gap-2">
-          <Bell className="w-4 h-4 text-emerald-400" />
+    <div className="sp-surface rounded-2xl p-5">
+      <div className="flex items-center gap-2 mb-4">
+        <Bell className="w-4 h-4" style={{ color: "var(--sp-accent)" }} />
+        <h3
+          className="text-sm font-semibold font-[family-name:var(--font-heading)]"
+          style={{ color: "var(--sp-text)" }}
+        >
           AI Alerts
-          <span className="ml-auto text-xs text-zinc-500 font-normal">
-            {alerts.length} active
-          </span>
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-2">
-        {alerts.map((alert) => {
+        </h3>
+        <span
+          className="ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full"
+          style={{ color: "var(--sp-accent)", background: "var(--sp-accent-subtle)" }}
+        >
+          {alerts.length} active
+        </span>
+      </div>
+      <div className="space-y-2">
+        {alerts.map((alert, i) => {
           const config = typeConfig[alert.type];
           return (
             <div
               key={alert.id}
-              className={cn(
-                "p-3 rounded-lg bg-zinc-800/30 border",
-                config.border
-              )}
+              className="sp-card-hover p-3 rounded-xl animate-fade-in-up"
+              style={{
+                background: config.bg,
+                border: `1px solid ${config.border}`,
+                animationDelay: `${i * 0.06}s`,
+              }}
             >
               <div className="flex items-start gap-2.5">
                 <div
-                  className={cn(
-                    "w-7 h-7 rounded-md flex items-center justify-center shrink-0 mt-0.5",
-                    config.bg
-                  )}
+                  className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
+                  style={{ background: config.bg }}
                 >
-                  <config.icon className={cn("w-3.5 h-3.5", config.color)} />
+                  <config.icon className="w-3.5 h-3.5" style={{ color: config.color }} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-zinc-200">
+                  <p className="text-[13px] font-semibold" style={{ color: "var(--sp-text)" }}>
                     {alert.title}
                   </p>
-                  <p className="text-xs text-zinc-400 mt-0.5 leading-relaxed">
+                  <p className="text-[11px] mt-0.5 leading-relaxed" style={{ color: "var(--sp-text-secondary)" }}>
                     {alert.message}
                   </p>
-                  <p className="text-[10px] text-zinc-600 mt-1">
+                  <p className="text-[10px] mt-1" style={{ color: "var(--sp-text-muted)" }}>
                     {new Date(alert.createdAt).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
@@ -84,7 +68,7 @@ export function AIAlerts() {
             </div>
           );
         })}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

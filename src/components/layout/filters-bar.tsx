@@ -46,89 +46,50 @@ export function FiltersBar({ filters, onChange }: Props) {
     if (value) onChange({ ...filters, [key]: value });
   };
 
+  const selectClass = "w-[140px] text-[12px] font-medium rounded-xl";
+
   return (
-    <div className="flex items-center gap-3 flex-wrap">
-      <Select
-        value={filters.timeRange}
-        onValueChange={(v) => update("timeRange", v)}
-      >
-        <SelectTrigger className="w-[150px] bg-zinc-900 border-zinc-700 text-zinc-200 text-sm">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent className="bg-zinc-900 border-zinc-700">
-          {timeRangeOptions.map((o) => (
-            <SelectItem key={o.value} value={o.value} className="text-zinc-200">
-              {o.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-
-      <Select
-        value={filters.country}
-        onValueChange={(v) => update("country", v)}
-      >
-        <SelectTrigger className="w-[150px] bg-zinc-900 border-zinc-700 text-zinc-200 text-sm">
-          <SelectValue placeholder="All Countries" />
-        </SelectTrigger>
-        <SelectContent className="bg-zinc-900 border-zinc-700">
-          <SelectItem value="all" className="text-zinc-200">All Countries</SelectItem>
-          {topCountries.map((c) => (
-            <SelectItem key={c.countryCode} value={c.countryCode} className="text-zinc-200">
-              {c.country}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-
-      <Select
-        value={filters.category}
-        onValueChange={(v) => update("category", v)}
-      >
-        <SelectTrigger className="w-[150px] bg-zinc-900 border-zinc-700 text-zinc-200 text-sm">
-          <SelectValue placeholder="All Categories" />
-        </SelectTrigger>
-        <SelectContent className="bg-zinc-900 border-zinc-700">
-          <SelectItem value="all" className="text-zinc-200">All Categories</SelectItem>
-          {categories.map((c) => (
-            <SelectItem key={c} value={c} className="text-zinc-200">
-              {c}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-
-      <Select
-        value={filters.segment}
-        onValueChange={(v) => update("segment", v)}
-      >
-        <SelectTrigger className="w-[150px] bg-zinc-900 border-zinc-700 text-zinc-200 text-sm">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent className="bg-zinc-900 border-zinc-700">
-          {segmentOptions.map((o) => (
-            <SelectItem key={o.value} value={o.value} className="text-zinc-200">
-              {o.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-
-      <Select
-        value={filters.channel}
-        onValueChange={(v) => update("channel", v)}
-      >
-        <SelectTrigger className="w-[150px] bg-zinc-900 border-zinc-700 text-zinc-200 text-sm">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent className="bg-zinc-900 border-zinc-700">
-          {channelOptions.map((o) => (
-            <SelectItem key={o.value} value={o.value} className="text-zinc-200">
-              {o.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+    <div className="flex items-center gap-2 flex-wrap">
+      {[
+        { key: "timeRange" as const, value: filters.timeRange, options: timeRangeOptions },
+        { key: "country" as const, value: filters.country, options: [{ value: "all", label: "All Countries" }, ...topCountries.map((c) => ({ value: c.countryCode, label: c.country }))] },
+        { key: "category" as const, value: filters.category, options: [{ value: "all", label: "All Categories" }, ...categories.map((c) => ({ value: c, label: c }))] },
+        { key: "segment" as const, value: filters.segment, options: segmentOptions },
+        { key: "channel" as const, value: filters.channel, options: channelOptions },
+      ].map((filter) => (
+        <Select
+          key={filter.key}
+          value={filter.value}
+          onValueChange={(v) => update(filter.key, v)}
+        >
+          <SelectTrigger
+            className={selectClass}
+            style={{
+              background: "var(--sp-surface)",
+              borderColor: "var(--sp-border)",
+              color: "var(--sp-text-secondary)",
+            }}
+          >
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent
+            style={{
+              background: "var(--sp-surface)",
+              borderColor: "var(--sp-border)",
+            }}
+          >
+            {filter.options.map((o) => (
+              <SelectItem
+                key={o.value}
+                value={o.value}
+                style={{ color: "var(--sp-text)" }}
+              >
+                {o.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      ))}
     </div>
   );
 }

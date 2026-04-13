@@ -6,11 +6,9 @@ import {
   DollarSign,
   ShoppingCart,
   TrendingUp,
-  Users,
   Eye,
   RotateCcw,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 function StatCard({
   label,
@@ -19,41 +17,63 @@ function StatCard({
   prefix = "",
   suffix = "",
   icon: Icon,
+  index = 0,
 }: {
   label: string;
   value: number;
   prev: number;
   prefix?: string;
   suffix?: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
+  index?: number;
 }) {
   const change = ((value - prev) / prev) * 100;
   const isPositive = change >= 0;
 
   return (
-    <div className="flex items-start gap-3 p-4 rounded-xl bg-zinc-800/50 border border-zinc-700/50">
-      <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-emerald-500/10">
-        <Icon className="w-5 h-5 text-emerald-400" />
-      </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-xs text-zinc-500 font-medium">{label}</p>
-        <p className="text-xl font-bold text-white mt-0.5">
-          {prefix}
-          {value.toLocaleString("en-US", {
-            minimumFractionDigits: suffix === "%" ? 1 : 0,
-            maximumFractionDigits: suffix === "%" ? 1 : 2,
-          })}
-          {suffix}
-        </p>
-        <p
-          className={cn(
-            "text-xs font-medium mt-1",
-            isPositive ? "text-emerald-400" : "text-red-400"
-          )}
+    <div
+      className="sp-surface sp-card-hover rounded-2xl p-4 group"
+    >
+      <div className="flex items-start gap-3">
+        <div
+          className="flex items-center justify-center w-10 h-10 rounded-xl transition-transform duration-300 group-hover:scale-110"
+          style={{ background: "var(--sp-accent-subtle)" }}
         >
-          {isPositive ? "+" : ""}
-          {change.toFixed(1)}% vs last period
-        </p>
+          <Icon className="w-5 h-5" style={{ color: "var(--sp-accent)" }} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-[11px] font-medium uppercase tracking-wider" style={{ color: "var(--sp-text-muted)" }}>
+            {label}
+          </p>
+          <p
+            className="text-xl font-bold mt-0.5 font-[family-name:var(--font-heading)] animate-counter"
+            style={{ color: "var(--sp-text)", animationDelay: `${index * 0.08}s` }}
+          >
+            {prefix}
+            {value.toLocaleString("en-US", {
+              minimumFractionDigits: suffix === "%" ? 1 : 0,
+              maximumFractionDigits: suffix === "%" ? 1 : 2,
+            })}
+            {suffix}
+          </p>
+          <div className="flex items-center gap-1 mt-1">
+            <span
+              className="inline-flex items-center gap-0.5 text-[11px] font-semibold px-1.5 py-0.5 rounded-md"
+              style={{
+                color: isPositive ? "#34d399" : "#f87171",
+                background: isPositive
+                  ? "rgba(52, 211, 153, 0.1)"
+                  : "rgba(248, 113, 113, 0.1)",
+              }}
+            >
+              {isPositive ? "+" : ""}
+              {change.toFixed(1)}%
+            </span>
+            <span className="text-[10px]" style={{ color: "var(--sp-text-muted)" }}>
+              vs last period
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -61,57 +81,30 @@ function StatCard({
 
 export function StoreHealth() {
   return (
-    <Card className="bg-zinc-900/50 border-zinc-800">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-sm font-medium text-zinc-300 flex items-center gap-2">
-          <TrendingUp className="w-4 h-4 text-emerald-400" />
+    <div className="sp-surface rounded-2xl p-5">
+      <div className="flex items-center gap-2 mb-4">
+        <TrendingUp className="w-4 h-4" style={{ color: "var(--sp-accent)" }} />
+        <h3
+          className="text-sm font-semibold font-[family-name:var(--font-heading)]"
+          style={{ color: "var(--sp-text)" }}
+        >
           Store Health
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
-          <StatCard
-            label="Revenue"
-            value={storeHealth.revenue}
-            prev={storeHealth.revenuePrev}
-            prefix="$"
-            icon={DollarSign}
-          />
-          <StatCard
-            label="Orders"
-            value={storeHealth.orders}
-            prev={storeHealth.ordersPrev}
-            icon={ShoppingCart}
-          />
-          <StatCard
-            label="Avg. Order Value"
-            value={storeHealth.avgOrderValue}
-            prev={storeHealth.avgOrderValuePrev}
-            prefix="$"
-            icon={DollarSign}
-          />
-          <StatCard
-            label="Conversion Rate"
-            value={storeHealth.conversionRate}
-            prev={storeHealth.conversionRatePrev}
-            suffix="%"
-            icon={TrendingUp}
-          />
-          <StatCard
-            label="Visitors"
-            value={storeHealth.visitors}
-            prev={storeHealth.visitorsPrev}
-            icon={Eye}
-          />
-          <StatCard
-            label="Returning Customers"
-            value={storeHealth.returningCustomerRate}
-            prev={32.1}
-            suffix="%"
-            icon={RotateCcw}
-          />
+        </h3>
+        <div
+          className="ml-auto text-[10px] font-medium px-2 py-0.5 rounded-full"
+          style={{ color: "var(--sp-accent)", background: "var(--sp-accent-subtle)" }}
+        >
+          Live
         </div>
-      </CardContent>
-    </Card>
+      </div>
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+        <StatCard label="Revenue" value={storeHealth.revenue} prev={storeHealth.revenuePrev} prefix="$" icon={DollarSign} index={0} />
+        <StatCard label="Orders" value={storeHealth.orders} prev={storeHealth.ordersPrev} icon={ShoppingCart} index={1} />
+        <StatCard label="Avg. Order Value" value={storeHealth.avgOrderValue} prev={storeHealth.avgOrderValuePrev} prefix="$" icon={DollarSign} index={2} />
+        <StatCard label="Conversion Rate" value={storeHealth.conversionRate} prev={storeHealth.conversionRatePrev} suffix="%" icon={TrendingUp} index={3} />
+        <StatCard label="Visitors" value={storeHealth.visitors} prev={storeHealth.visitorsPrev} icon={Eye} index={4} />
+        <StatCard label="Returning Customers" value={storeHealth.returningCustomerRate} prev={32.1} suffix="%" icon={RotateCcw} index={5} />
+      </div>
+    </div>
   );
 }

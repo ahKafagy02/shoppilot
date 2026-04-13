@@ -24,12 +24,17 @@ export default function DashboardPage() {
   });
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 lg:p-8 space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between animate-fade-in-up">
         <div>
-          <h1 className="text-2xl font-bold text-white">Dashboard</h1>
-          <p className="text-sm text-zinc-500 mt-1">
+          <h1
+            className="text-2xl font-bold tracking-tight font-[family-name:var(--font-heading)]"
+            style={{ color: "var(--sp-text)" }}
+          >
+            Dashboard
+          </h1>
+          <p className="text-sm mt-1" style={{ color: "var(--sp-text-muted)" }}>
             Welcome back. Here&apos;s what&apos;s happening with your store.
           </p>
         </div>
@@ -37,33 +42,55 @@ export default function DashboardPage() {
       </div>
 
       {/* Row 1: Store Health */}
-      <StoreHealth />
+      <div className="animate-fade-in-up stagger-1">
+        <StoreHealth />
+      </div>
 
       {/* Row 2: Revenue Chart + Globe */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-        <RevenueChart />
-        <CustomerGlobe />
+        <div className="animate-fade-in-up stagger-2">
+          <RevenueChart />
+        </div>
+        <div className="animate-fade-in-up stagger-3">
+          <CustomerGlobe />
+        </div>
       </div>
 
       {/* Row 3: Weekly Summary */}
-      <WeeklySummary />
+      <div className="animate-fade-in-up stagger-4">
+        <WeeklySummary />
+      </div>
 
       {/* Row 4: Products + Segments */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        <TopProducts />
-        <WeakProducts />
-        <CustomerSegments />
+        <div className="animate-fade-in-up stagger-5">
+          <TopProducts />
+        </div>
+        <div className="animate-fade-in-up stagger-6">
+          <WeakProducts />
+        </div>
+        <div className="animate-fade-in-up stagger-7">
+          <CustomerSegments />
+        </div>
       </div>
 
       {/* Row 5: Funnel + Channels + Alerts */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        <ConversionFunnel />
-        <SalesChannels />
-        <AIAlerts />
+        <div className="animate-fade-in-up stagger-6">
+          <ConversionFunnel />
+        </div>
+        <div className="animate-fade-in-up stagger-7">
+          <SalesChannels />
+        </div>
+        <div className="animate-fade-in-up stagger-8">
+          <AIAlerts />
+        </div>
       </div>
 
       {/* Row 6: Recent Orders */}
-      <RecentOrders />
+      <div className="animate-fade-in-up stagger-8">
+        <RecentOrders />
+      </div>
     </div>
   );
 }

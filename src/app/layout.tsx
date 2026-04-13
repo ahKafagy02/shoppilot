@@ -1,16 +1,26 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Sora, Outfit, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Sidebar } from "@/components/layout/sidebar";
+import { ThemeProvider } from "@/components/theme-provider";
+import { PageTransition } from "@/components/page-transition";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const heading = Sora({
+  variable: "--font-heading",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
-const geistMono = Geist_Mono({
+const body = Outfit({
+  variable: "--font-sans",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+});
+
+const mono = JetBrains_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
@@ -27,11 +37,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
+      className={`${heading.variable} ${body.variable} ${mono.variable} h-full antialiased dark`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full bg-zinc-950 text-zinc-100">
-        <Sidebar />
-        <main className="ml-64 min-h-screen">{children}</main>
+      <body className="min-h-full sp-noise" style={{ background: "var(--sp-bg)" }}>
+        <ThemeProvider>
+          <Sidebar />
+          <main className="ml-64 min-h-screen">
+            <PageTransition>{children}</PageTransition>
+          </main>
+        </ThemeProvider>
       </body>
     </html>
   );

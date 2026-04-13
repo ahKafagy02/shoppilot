@@ -1,50 +1,60 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { salesByChannel } from "@/data/mock-data";
 import { BarChart3 } from "lucide-react";
 
-const channelColors = [
-  "bg-emerald-500",
-  "bg-cyan-500",
-  "bg-violet-500",
-  "bg-amber-500",
-];
+const channelColors = ["#34d399", "#06b6d4", "#a78bfa", "#fbbf24"];
 
 export function SalesChannels() {
   return (
-    <Card className="bg-zinc-900/50 border-zinc-800">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-sm font-medium text-zinc-300 flex items-center gap-2">
-          <BarChart3 className="w-4 h-4 text-emerald-400" />
+    <div className="sp-surface rounded-2xl p-5">
+      <div className="flex items-center gap-2 mb-4">
+        <BarChart3 className="w-4 h-4" style={{ color: "var(--sp-accent)" }} />
+        <h3
+          className="text-sm font-semibold font-[family-name:var(--font-heading)]"
+          style={{ color: "var(--sp-text)" }}
+        >
           Sales by Channel
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-3">
-          {salesByChannel.map((channel, i) => (
-            <div key={channel.channel}>
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-sm text-zinc-300">{channel.channel}</span>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-semibold text-white">
-                    ${channel.revenue.toLocaleString()}
-                  </span>
-                  <span className="text-xs text-zinc-500">
-                    {channel.percentage}%
-                  </span>
-                </div>
+        </h3>
+      </div>
+      <div className="space-y-4">
+        {salesByChannel.map((channel, i) => (
+          <div key={channel.channel} className="animate-fade-in-up" style={{ animationDelay: `${i * 0.08}s` }}>
+            <div className="flex items-center justify-between mb-1.5">
+              <div className="flex items-center gap-2">
+                <div className="w-2.5 h-2.5 rounded-full" style={{ background: channelColors[i] }} />
+                <span className="text-[13px] font-medium" style={{ color: "var(--sp-text)" }}>{channel.channel}</span>
               </div>
-              <div className="h-2 bg-zinc-800 rounded-full overflow-hidden">
+              <div className="flex items-center gap-2">
+                <span
+                  className="text-[13px] font-bold font-[family-name:var(--font-heading)]"
+                  style={{ color: "var(--sp-text)" }}
+                >
+                  ${channel.revenue.toLocaleString()}
+                </span>
+                <span className="text-[11px] font-medium" style={{ color: "var(--sp-text-muted)" }}>
+                  {channel.percentage}%
+                </span>
+              </div>
+            </div>
+            <div className="h-2 rounded-full overflow-hidden" style={{ background: "var(--sp-accent-subtle)" }}>
+              <div
+                className="h-full rounded-full transition-all duration-700 ease-out relative overflow-hidden"
+                style={{ width: `${channel.percentage}%`, background: channelColors[i] }}
+              >
                 <div
-                  className={`h-full rounded-full ${channelColors[i]} transition-all duration-500`}
-                  style={{ width: `${channel.percentage}%` }}
+                  className="absolute inset-0 opacity-30"
+                  style={{
+                    background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)",
+                    backgroundSize: "200% 100%",
+                    animation: "shimmer 3s infinite",
+                  }}
                 />
               </div>
             </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

@@ -1,65 +1,64 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { products } from "@/data/mock-data";
 import { ShoppingBag, TrendingUp, TrendingDown } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 export function TopProducts() {
   const sorted = [...products].sort((a, b) => b.revenue - a.revenue).slice(0, 5);
 
   return (
-    <Card className="bg-zinc-900/50 border-zinc-800">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-sm font-medium text-zinc-300 flex items-center gap-2">
-          <ShoppingBag className="w-4 h-4 text-emerald-400" />
+    <div className="sp-surface rounded-2xl p-5">
+      <div className="flex items-center gap-2 mb-4">
+        <ShoppingBag className="w-4 h-4" style={{ color: "var(--sp-accent)" }} />
+        <h3
+          className="text-sm font-semibold font-[family-name:var(--font-heading)]"
+          style={{ color: "var(--sp-text)" }}
+        >
           Top Products
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3">
+        </h3>
+      </div>
+      <div className="space-y-2.5">
         {sorted.map((product, i) => (
           <div
             key={product.id}
-            className="flex items-center gap-3 p-3 rounded-lg bg-zinc-800/30 border border-zinc-700/30"
+            className="sp-card-hover flex items-center gap-3 p-3 rounded-xl transition-all duration-200"
+            style={{ background: "var(--sp-accent-subtle)", border: "1px solid var(--sp-border)" }}
           >
-            <span className="text-xs font-bold text-zinc-500 w-5">
+            <span
+              className="text-xs font-bold w-5 text-center font-[family-name:var(--font-heading)]"
+              style={{ color: "var(--sp-text-muted)" }}
+            >
               #{i + 1}
             </span>
-            <div className="w-10 h-10 rounded-lg bg-zinc-700/50 flex items-center justify-center text-lg">
-              {["🎧", "👕", "💧", "👛", "🧘"][i]}
+            <div className="w-9 h-9 rounded-lg flex items-center justify-center text-base"
+              style={{ background: "var(--sp-surface)" }}
+            >
+              {["\u{1F3A7}", "\u{1F455}", "\u{1F4A7}", "\u{1F45B}", "\u{1F9D8}"][i]}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-zinc-200 truncate">
+              <p className="text-[13px] font-medium truncate" style={{ color: "var(--sp-text)" }}>
                 {product.title}
               </p>
-              <p className="text-xs text-zinc-500">
-                {product.sold.toLocaleString()} sold · ${product.price}
+              <p className="text-[11px]" style={{ color: "var(--sp-text-muted)" }}>
+                {product.sold.toLocaleString()} sold
               </p>
             </div>
             <div className="text-right">
-              <p className="text-sm font-semibold text-white">
+              <p className="text-[13px] font-bold font-[family-name:var(--font-heading)]" style={{ color: "var(--sp-text)" }}>
                 ${product.revenue.toLocaleString()}
               </p>
-              <div
-                className={cn(
-                  "flex items-center gap-0.5 text-xs font-medium justify-end",
-                  product.trend >= 0 ? "text-emerald-400" : "text-red-400"
-                )}
+              <div className="flex items-center gap-0.5 text-[11px] font-semibold justify-end"
+                style={{ color: product.trend >= 0 ? "#34d399" : "#f87171" }}
               >
-                {product.trend >= 0 ? (
-                  <TrendingUp className="w-3 h-3" />
-                ) : (
-                  <TrendingDown className="w-3 h-3" />
-                )}
-                {product.trend >= 0 ? "+" : ""}
-                {product.trend}%
+                {product.trend >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+                {product.trend >= 0 ? "+" : ""}{product.trend}%
               </div>
             </div>
           </div>
         ))}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
 
@@ -70,46 +69,50 @@ export function WeakProducts() {
     .slice(0, 5);
 
   return (
-    <Card className="bg-zinc-900/50 border-zinc-800">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-sm font-medium text-zinc-300 flex items-center gap-2">
-          <TrendingDown className="w-4 h-4 text-red-400" />
-          Underperforming Products
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3">
+    <div className="sp-surface rounded-2xl p-5">
+      <div className="flex items-center gap-2 mb-4">
+        <TrendingDown className="w-4 h-4" style={{ color: "#f87171" }} />
+        <h3
+          className="text-sm font-semibold font-[family-name:var(--font-heading)]"
+          style={{ color: "var(--sp-text)" }}
+        >
+          Underperforming
+        </h3>
+      </div>
+      <div className="space-y-2.5">
         {sorted.map((product) => (
           <div
             key={product.id}
-            className="flex items-center gap-3 p-3 rounded-lg bg-zinc-800/30 border border-red-900/20"
+            className="sp-card-hover flex items-center gap-3 p-3 rounded-xl transition-all duration-200"
+            style={{ background: "rgba(248, 113, 113, 0.04)", border: "1px solid rgba(248, 113, 113, 0.1)" }}
           >
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-zinc-200 truncate">
+              <p className="text-[13px] font-medium truncate" style={{ color: "var(--sp-text)" }}>
                 {product.title}
               </p>
-              <div className="flex items-center gap-2 mt-1">
-                <p className="text-xs text-zinc-500">
+              <div className="flex items-center gap-2 mt-0.5">
+                <p className="text-[11px]" style={{ color: "var(--sp-text-muted)" }}>
                   {product.sold} sold · Stock: {product.inventory}
                 </p>
                 {product.inventory === 0 && (
-                  <Badge variant="destructive" className="text-[10px] h-4">
-                    Out of stock
-                  </Badge>
+                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-red-500/10 text-red-400">
+                    OUT OF STOCK
+                  </span>
                 )}
                 {product.inventory > 0 && product.inventory < 20 && (
-                  <Badge className="text-[10px] h-4 bg-amber-500/20 text-amber-400 hover:bg-amber-500/20">
-                    Low stock
-                  </Badge>
+                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-amber-500/10 text-amber-400">
+                    LOW STOCK
+                  </span>
                 )}
               </div>
             </div>
-            <div className="flex items-center gap-1 text-sm font-medium text-red-400">
-              <TrendingDown className="w-3 h-3" />
+            <div className="flex items-center gap-1 text-sm font-bold" style={{ color: "#f87171" }}>
+              <TrendingDown className="w-3.5 h-3.5" />
               {product.trend}%
             </div>
           </div>
         ))}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
