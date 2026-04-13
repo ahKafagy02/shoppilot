@@ -6,7 +6,7 @@ import { Bell, AlertTriangle, CheckCircle, Info, XCircle } from "lucide-react";
 const typeConfig = {
   critical: { icon: XCircle, color: "#f87171", bg: "rgba(248,113,113,0.08)", border: "rgba(248,113,113,0.15)" },
   warning: { icon: AlertTriangle, color: "#fbbf24", bg: "rgba(251,191,36,0.08)", border: "rgba(251,191,36,0.15)" },
-  success: { icon: CheckCircle, color: "#34d399", bg: "rgba(52,211,153,0.08)", border: "rgba(52,211,153,0.15)" },
+  success: { icon: CheckCircle, color: "#8b5cf6", bg: "rgba(52,211,153,0.08)", border: "rgba(52,211,153,0.15)" },
   info: { icon: Info, color: "#60a5fa", bg: "rgba(96,165,250,0.08)", border: "rgba(96,165,250,0.15)" },
 };
 

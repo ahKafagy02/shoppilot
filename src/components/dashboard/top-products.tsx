@@ -49,7 +49,7 @@ export function TopProducts() {
                 ${product.revenue.toLocaleString()}
               </p>
               <div className="flex items-center gap-0.5 text-[11px] font-semibold justify-end"
-                style={{ color: product.trend >= 0 ? "#34d399" : "#f87171" }}
+                style={{ color: product.trend >= 0 ? "#8b5cf6" : "#f87171" }}
               >
                 {product.trend >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
                 {product.trend >= 0 ? "+" : ""}{product.trend}%

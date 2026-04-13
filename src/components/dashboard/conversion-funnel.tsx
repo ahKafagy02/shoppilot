@@ -46,7 +46,7 @@ export function ConversionFunnel() {
                   className="h-full rounded-xl transition-all duration-700 ease-out relative overflow-hidden"
                   style={{
                     width: `${step.rate}%`,
-                    background: `linear-gradient(90deg, var(--sp-accent), ${i === 0 ? "var(--sp-accent)" : "rgba(52,211,153,0.6)"})`,
+                    background: `linear-gradient(90deg, var(--sp-accent), ${i === 0 ? "var(--sp-accent)" : "rgba(139,92,246,0.5)"})`,
                   }}
                 >
                   {/* Shimmer effect */}

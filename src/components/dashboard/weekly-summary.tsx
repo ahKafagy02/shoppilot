@@ -1,10 +1,12 @@
 "use client";
 
 import { FileText, Sparkles } from "lucide-react";
+import { BorderBeam } from "@/components/ui/border-beam";
 
 export function WeeklySummary() {
   return (
     <div className="sp-surface sp-card-hover rounded-2xl p-5 relative overflow-hidden">
+      <BorderBeam size={120} duration={8} colorFrom="#8b5cf6" colorTo="#f59e0b" />
       {/* Subtle accent glow */}
       <div
         className="absolute -top-20 -right-20 w-40 h-40 rounded-full blur-3xl opacity-20 pointer-events-none"
@@ -42,7 +44,7 @@ export function WeeklySummary() {
           featuring it on your homepage and increasing ad spend.
         </p>
         <p>
-          <strong style={{ color: "#fbbf24" }}>Watch out:</strong> Stainless
+          <strong style={{ color: "#f59e0b" }}>Watch out:</strong> Stainless
           Steel Insulated Mug and Bamboo Desk Organizer are trending down
           (-31.5% and -15.3%). The mug also has an unusually high return rate
           (8.5%). Review customer feedback for quality issues.

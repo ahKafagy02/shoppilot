@@ -6,7 +6,7 @@ import { SalesChannels } from "@/components/dashboard/sales-channels";
 import { dailyStats } from "@/data/mock-data";
 import { BarChart3 } from "lucide-react";
 import { PageHeader } from "@/components/layout/page-header";
-import { useTheme } from "@/components/theme-provider";
+import { useTheme } from "next-themes";
 import {
   BarChart,
   Bar,
@@ -18,7 +18,7 @@ import {
 } from "recharts";
 
 export default function AnalyticsPage() {
-  const { theme } = useTheme();
+  const { resolvedTheme: theme } = useTheme();
   const last30 = dailyStats.slice(-30);
   const totalRevenue = last30.reduce((s, d) => s + d.revenue, 0);
   const totalOrders = last30.reduce((s, d) => s + d.orders, 0);

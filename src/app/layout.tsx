@@ -37,7 +37,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${heading.variable} ${body.variable} ${mono.variable} h-full antialiased dark`}
+      className={`${heading.variable} ${body.variable} ${mono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full sp-noise" style={{ background: "var(--sp-bg)" }}>

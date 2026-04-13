@@ -12,7 +12,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useState } from "react";
-import { useTheme } from "@/components/theme-provider";
+import { useTheme } from "next-themes";
 
 const ranges: Record<string, number> = {
   "7d": 7,
@@ -22,7 +22,7 @@ const ranges: Record<string, number> = {
 
 export function RevenueChart() {
   const [range, setRange] = useState("30d");
-  const { theme } = useTheme();
+  const { resolvedTheme: theme } = useTheme();
   const data = dailyStats.slice(-ranges[range]);
 
   const gridColor = theme === "dark" ? "#1e1e2e" : "#e8e8ee";

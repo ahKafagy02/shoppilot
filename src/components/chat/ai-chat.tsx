@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, Sparkles, User, Loader2, Bot } from "lucide-react";
-import { useTheme } from "@/components/theme-provider";
+import { useTheme } from "next-themes";
 
 type Message = {
   id: string;
@@ -83,7 +83,7 @@ function formatContent(text: string) {
 }
 
 export function AIChat() {
-  const { theme } = useTheme();
+  const { resolvedTheme: theme } = useTheme();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",

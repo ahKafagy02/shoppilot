@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { useTheme } from "@/components/theme-provider";
+import { useTheme } from "next-themes";
 import {
   LayoutDashboard,
   Globe,
@@ -33,7 +33,8 @@ const navItems = [
 
 export function Sidebar() {
   const pathname = usePathname();
-  const { theme, toggleTheme } = useTheme();
+  const { resolvedTheme: theme, setTheme } = useTheme();
+  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
   return (
     <aside
@@ -50,9 +51,9 @@ export function Sidebar() {
         className="flex items-center gap-2.5 px-6 py-5"
         style={{ borderBottom: "1px solid var(--sp-border)" }}
       >
-        <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-400 shadow-lg shadow-emerald-500/20">
+        <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-500 shadow-lg shadow-violet-500/25">
           <Zap className="w-4.5 h-4.5 text-white" />
-          <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-300 opacity-0 hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-400 opacity-0 hover:opacity-100 transition-opacity duration-300" />
         </div>
         <div className="flex flex-col">
           <span
@@ -177,7 +178,7 @@ export function Sidebar() {
               mystore.myshopify.com
             </p>
           </div>
-          <div className="w-2 h-2 rounded-full bg-emerald-400 animate-glow-pulse" />
+          <div className="w-2 h-2 rounded-full bg-violet-400 animate-glow-pulse" />
         </div>
       </div>
     </aside>

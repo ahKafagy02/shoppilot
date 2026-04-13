@@ -12,6 +12,7 @@ import { AIAlerts } from "@/components/dashboard/ai-alerts";
 import { SalesChannels } from "@/components/dashboard/sales-channels";
 import { WeeklySummary } from "@/components/dashboard/weekly-summary";
 import { CustomerGlobe } from "@/components/globe/customer-globe";
+import { BlurFade } from "@/components/ui/blur-fade";
 import type { FilterState } from "@/types";
 
 export default function DashboardPage() {
@@ -26,74 +27,76 @@ export default function DashboardPage() {
   return (
     <div className="p-6 lg:p-8 space-y-6 max-w-[1600px]">
       {/* Header */}
-      <div className="flex items-start justify-between gap-6 animate-fade-in-up">
-        <div>
-          <h1
-            className="text-2xl font-bold tracking-tight font-[family-name:var(--font-heading)]"
-            style={{ color: "var(--sp-text)" }}
-          >
-            Dashboard
-          </h1>
-          <p className="text-sm mt-1" style={{ color: "var(--sp-text-muted)" }}>
-            Welcome back. Here&apos;s what&apos;s happening with your store.
-          </p>
+      <BlurFade delay={0}>
+        <div className="flex items-start justify-between gap-6">
+          <div>
+            <h1
+              className="text-2xl font-bold tracking-tight font-[family-name:var(--font-heading)]"
+              style={{ color: "var(--sp-text)" }}
+            >
+              Dashboard
+            </h1>
+            <p className="text-sm mt-1" style={{ color: "var(--sp-text-muted)" }}>
+              Welcome back. Here&apos;s what&apos;s happening with your store.
+            </p>
+          </div>
+          <FiltersBar filters={filters} onChange={setFilters} />
         </div>
-        <FiltersBar filters={filters} onChange={setFilters} />
-      </div>
+      </BlurFade>
 
-      {/* === TIER 1: The most important info at a glance === */}
-      <div className="animate-fade-in-up stagger-1">
+      {/* TIER 1: KPIs */}
+      <BlurFade delay={0.05}>
         <StoreHealth />
-      </div>
+      </BlurFade>
 
-      {/* === TIER 2: Revenue trend (full width — the hero chart) === */}
-      <div className="animate-fade-in-up stagger-2">
+      {/* TIER 2: Revenue (full width hero) */}
+      <BlurFade delay={0.1}>
         <RevenueChart />
-      </div>
+      </BlurFade>
 
-      {/* === TIER 3: AI Summary — the "so what" of the data === */}
-      <div className="animate-fade-in-up stagger-3">
+      {/* TIER 3: AI Summary */}
+      <BlurFade delay={0.15}>
         <WeeklySummary />
-      </div>
+      </BlurFade>
 
-      {/* === TIER 4: Geographic + Segments — who are your customers === */}
+      {/* TIER 4: Globe + Segments */}
       <div className="grid grid-cols-1 xl:grid-cols-5 gap-6">
-        <div className="xl:col-span-3 animate-fade-in-up stagger-4">
+        <BlurFade delay={0.2} className="xl:col-span-3">
           <CustomerGlobe />
-        </div>
-        <div className="xl:col-span-2 animate-fade-in-up stagger-5">
+        </BlurFade>
+        <BlurFade delay={0.25} className="xl:col-span-2">
           <CustomerSegments />
-        </div>
+        </BlurFade>
       </div>
 
-      {/* === TIER 5: Products — what sells, what doesn't === */}
+      {/* TIER 5: Products */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-        <div className="animate-fade-in-up stagger-5">
+        <BlurFade delay={0.25}>
           <TopProducts />
-        </div>
-        <div className="animate-fade-in-up stagger-6">
+        </BlurFade>
+        <BlurFade delay={0.3}>
           <WeakProducts />
-        </div>
+        </BlurFade>
       </div>
 
-      {/* === TIER 6: Funnel + Channels — how they buy === */}
+      {/* TIER 6: Funnel + Channels */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-        <div className="animate-fade-in-up stagger-6">
+        <BlurFade delay={0.3}>
           <ConversionFunnel />
-        </div>
-        <div className="animate-fade-in-up stagger-7">
+        </BlurFade>
+        <BlurFade delay={0.35}>
           <SalesChannels />
-        </div>
+        </BlurFade>
       </div>
 
-      {/* === TIER 7: Alerts + Recent Orders — latest activity === */}
+      {/* TIER 7: Alerts + Orders */}
       <div className="grid grid-cols-1 xl:grid-cols-5 gap-6">
-        <div className="xl:col-span-2 animate-fade-in-up stagger-7">
+        <BlurFade delay={0.35} className="xl:col-span-2">
           <AIAlerts />
-        </div>
-        <div className="xl:col-span-3 animate-fade-in-up stagger-8">
+        </BlurFade>
+        <BlurFade delay={0.4} className="xl:col-span-3">
           <RecentOrders />
-        </div>
+        </BlurFade>
       </div>
     </div>
   );

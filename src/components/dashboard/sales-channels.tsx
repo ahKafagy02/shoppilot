@@ -3,7 +3,7 @@
 import { salesByChannel } from "@/data/mock-data";
 import { BarChart3 } from "lucide-react";
 
-const channelColors = ["#34d399", "#06b6d4", "#a78bfa", "#fbbf24"];
+const channelColors = ["#8b5cf6", "#60a5fa", "#a78bfa", "#fbbf24"];
 
 export function SalesChannels() {
   return (

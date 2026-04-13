@@ -4,7 +4,7 @@ import { recentOrders } from "@/data/mock-data";
 import { ShoppingCart } from "lucide-react";
 
 const statusStyles: Record<string, { color: string; bg: string; label: string }> = {
-  fulfilled: { color: "#34d399", bg: "rgba(52,211,153,0.1)", label: "Fulfilled" },
+  fulfilled: { color: "#8b5cf6", bg: "rgba(52,211,153,0.1)", label: "Fulfilled" },
   pending: { color: "#fbbf24", bg: "rgba(251,191,36,0.1)", label: "Pending" },
   refunded: { color: "#f87171", bg: "rgba(248,113,113,0.1)", label: "Refunded" },
   partially_fulfilled: { color: "#60a5fa", bg: "rgba(96,165,250,0.1)", label: "Partial" },
