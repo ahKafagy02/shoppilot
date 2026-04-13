@@ -1,11 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
@@ -14,7 +12,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  Settings,
   Store,
   Brain,
   Key,
@@ -24,13 +21,11 @@ import {
   Link2,
   Unlink,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 export function SettingsForm() {
   const [shopifyDomain, setShopifyDomain] = useState("");
   const [shopifyConnected, setShopifyConnected] = useState(false);
   const [shopifyLoading, setShopifyLoading] = useState(false);
-
   const [aiProvider, setAiProvider] = useState("claude");
   const [aiKey, setAiKey] = useState("");
   const [aiModel, setAiModel] = useState("claude-sonnet-4-6");
@@ -39,20 +34,13 @@ export function SettingsForm() {
 
   const connectShopify = async () => {
     setShopifyLoading(true);
-    // TODO: Replace with real Shopify OAuth flow
     await new Promise((r) => setTimeout(r, 1500));
     setShopifyConnected(true);
     setShopifyLoading(false);
   };
 
-  const disconnectShopify = () => {
-    setShopifyConnected(false);
-    setShopifyDomain("");
-  };
-
   const testAiKey = async () => {
     setAiLoading(true);
-    // TODO: Replace with real API key validation
     await new Promise((r) => setTimeout(r, 1200));
     setAiConnected(aiKey.length > 10);
     setAiLoading(false);
@@ -77,186 +65,156 @@ export function SettingsForm() {
   return (
     <div className="max-w-2xl space-y-6">
       {/* Shopify Connection */}
-      <Card className="bg-zinc-900/50 border-zinc-800">
-        <CardHeader>
-          <CardTitle className="text-sm font-medium text-zinc-300 flex items-center gap-2">
-            <Store className="w-4 h-4 text-emerald-400" />
+      <div className="sp-surface rounded-2xl p-6 animate-fade-in-up">
+        <div className="flex items-center gap-2 mb-5">
+          <Store className="w-4 h-4" style={{ color: "var(--sp-accent)" }} />
+          <h3 className="text-sm font-semibold font-[family-name:var(--font-heading)]" style={{ color: "var(--sp-text)" }}>
             Shopify Store Connection
-            {shopifyConnected && (
-              <Badge className="ml-auto bg-emerald-500/10 text-emerald-400 border-0">
-                <CheckCircle className="w-3 h-3 mr-1" />
-                Connected
-              </Badge>
-            )}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label className="text-zinc-400 text-xs">Store Domain</Label>
-            <div className="flex gap-2">
+          </h3>
+          {shopifyConnected && (
+            <span className="ml-auto flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ color: "var(--sp-accent)", background: "var(--sp-accent-subtle)" }}>
+              <CheckCircle className="w-3 h-3" /> Connected
+            </span>
+          )}
+        </div>
+        <div className="space-y-3">
+          <div>
+            <Label className="text-[11px] font-medium uppercase tracking-wider" style={{ color: "var(--sp-text-muted)" }}>Store Domain</Label>
+            <div className="flex gap-2 mt-1.5">
               <Input
                 value={shopifyDomain}
                 onChange={(e) => setShopifyDomain(e.target.value)}
                 placeholder="mystore.myshopify.com"
                 disabled={shopifyConnected}
-                className="bg-zinc-800/50 border-zinc-700 text-zinc-200 placeholder:text-zinc-600"
+                className="rounded-xl text-[13px]"
+                style={{ background: "var(--sp-bg-subtle)", border: "1px solid var(--sp-border)", color: "var(--sp-text)" }}
               />
               {shopifyConnected ? (
                 <Button
                   variant="outline"
-                  onClick={disconnectShopify}
-                  className="border-red-800 text-red-400 hover:bg-red-500/10 shrink-0"
+                  onClick={() => { setShopifyConnected(false); setShopifyDomain(""); }}
+                  className="rounded-xl shrink-0 border-red-500/30 text-red-400 hover:bg-red-500/10"
                 >
-                  <Unlink className="w-4 h-4 mr-1.5" />
-                  Disconnect
+                  <Unlink className="w-4 h-4 mr-1.5" /> Disconnect
                 </Button>
               ) : (
                 <Button
                   onClick={connectShopify}
                   disabled={!shopifyDomain || shopifyLoading}
-                  className="bg-emerald-600 hover:bg-emerald-500 text-white shrink-0"
+                  className="rounded-xl shrink-0 text-white shadow-sm"
+                  style={{ background: "var(--sp-accent)" }}
                 >
-                  {shopifyLoading ? (
-                    <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
-                  ) : (
-                    <Link2 className="w-4 h-4 mr-1.5" />
-                  )}
+                  {shopifyLoading ? <Loader2 className="w-4 h-4 mr-1.5 animate-spin" /> : <Link2 className="w-4 h-4 mr-1.5" />}
                   Connect via OAuth
                 </Button>
               )}
             </div>
-            <p className="text-[11px] text-zinc-600">
-              This will redirect you to Shopify to authorize ShopPilot to access
-              your store data via MCP.
+            <p className="text-[11px] mt-1.5" style={{ color: "var(--sp-text-muted)" }}>
+              Redirects to Shopify to authorize ShopPilot access via MCP.
             </p>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* AI Provider */}
-      <Card className="bg-zinc-900/50 border-zinc-800">
-        <CardHeader>
-          <CardTitle className="text-sm font-medium text-zinc-300 flex items-center gap-2">
-            <Brain className="w-4 h-4 text-emerald-400" />
+      <div className="sp-surface rounded-2xl p-6 animate-fade-in-up stagger-1">
+        <div className="flex items-center gap-2 mb-5">
+          <Brain className="w-4 h-4" style={{ color: "var(--sp-accent)" }} />
+          <h3 className="text-sm font-semibold font-[family-name:var(--font-heading)]" style={{ color: "var(--sp-text)" }}>
             AI Configuration
-            {aiConnected && (
-              <Badge className="ml-auto bg-emerald-500/10 text-emerald-400 border-0">
-                <CheckCircle className="w-3 h-3 mr-1" />
-                Verified
-              </Badge>
-            )}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label className="text-zinc-400 text-xs">AI Provider</Label>
+          </h3>
+          {aiConnected && (
+            <span className="ml-auto flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ color: "var(--sp-accent)", background: "var(--sp-accent-subtle)" }}>
+              <CheckCircle className="w-3 h-3" /> Verified
+            </span>
+          )}
+        </div>
+        <div className="space-y-4">
+          <div>
+            <Label className="text-[11px] font-medium uppercase tracking-wider" style={{ color: "var(--sp-text-muted)" }}>AI Provider</Label>
             <Select value={aiProvider} onValueChange={(v) => { if (v) { setAiProvider(v); setAiConnected(false); } }}>
-              <SelectTrigger className="bg-zinc-800/50 border-zinc-700 text-zinc-200">
+              <SelectTrigger className="mt-1.5 rounded-xl text-[13px]" style={{ background: "var(--sp-bg-subtle)", border: "1px solid var(--sp-border)", color: "var(--sp-text)" }}>
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-zinc-900 border-zinc-700">
-                <SelectItem value="claude" className="text-zinc-200">Anthropic (Claude)</SelectItem>
-                <SelectItem value="openai" className="text-zinc-200">OpenAI (GPT)</SelectItem>
-                <SelectItem value="gemini" className="text-zinc-200">Google (Gemini)</SelectItem>
+              <SelectContent style={{ background: "var(--sp-surface)", border: "1px solid var(--sp-border)" }}>
+                <SelectItem value="claude" style={{ color: "var(--sp-text)" }}>Anthropic (Claude)</SelectItem>
+                <SelectItem value="openai" style={{ color: "var(--sp-text)" }}>OpenAI (GPT)</SelectItem>
+                <SelectItem value="gemini" style={{ color: "var(--sp-text)" }}>Google (Gemini)</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
-          <div className="space-y-2">
-            <Label className="text-zinc-400 text-xs">API Key</Label>
-            <div className="flex gap-2">
+          <div>
+            <Label className="text-[11px] font-medium uppercase tracking-wider" style={{ color: "var(--sp-text-muted)" }}>API Key</Label>
+            <div className="flex gap-2 mt-1.5">
               <Input
                 type="password"
                 value={aiKey}
-                onChange={(e) => {
-                  setAiKey(e.target.value);
-                  setAiConnected(false);
-                }}
-                placeholder={
-                  aiProvider === "claude"
-                    ? "sk-ant-..."
-                    : aiProvider === "openai"
-                    ? "sk-..."
-                    : "AIza..."
-                }
-                className="bg-zinc-800/50 border-zinc-700 text-zinc-200 placeholder:text-zinc-600 font-mono text-xs"
+                onChange={(e) => { setAiKey(e.target.value); setAiConnected(false); }}
+                placeholder={aiProvider === "claude" ? "sk-ant-..." : aiProvider === "openai" ? "sk-..." : "AIza..."}
+                className="rounded-xl text-[12px] font-mono"
+                style={{ background: "var(--sp-bg-subtle)", border: "1px solid var(--sp-border)", color: "var(--sp-text)" }}
               />
               <Button
                 onClick={testAiKey}
                 disabled={!aiKey || aiLoading}
                 variant="outline"
-                className="border-zinc-700 text-zinc-300 hover:bg-zinc-800 shrink-0"
+                className="rounded-xl shrink-0"
+                style={{ border: "1px solid var(--sp-border)", color: "var(--sp-text-secondary)" }}
               >
-                {aiLoading ? (
-                  <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
-                ) : (
-                  <Key className="w-4 h-4 mr-1.5" />
-                )}
+                {aiLoading ? <Loader2 className="w-4 h-4 mr-1.5 animate-spin" /> : <Key className="w-4 h-4 mr-1.5" />}
                 Test Key
               </Button>
             </div>
-            <p className="text-[11px] text-zinc-600">
-              Your API key is encrypted and stored securely. We never see or log
-              your key. All AI costs are billed directly to your account.
+            <p className="text-[11px] mt-1.5" style={{ color: "var(--sp-text-muted)" }}>
+              Your key is encrypted. All AI costs billed to your account.
             </p>
           </div>
 
-          <div className="space-y-2">
-            <Label className="text-zinc-400 text-xs">Model</Label>
+          <div>
+            <Label className="text-[11px] font-medium uppercase tracking-wider" style={{ color: "var(--sp-text-muted)" }}>Model</Label>
             <Select value={aiModel} onValueChange={(v) => { if (v) setAiModel(v); }}>
-              <SelectTrigger className="bg-zinc-800/50 border-zinc-700 text-zinc-200">
+              <SelectTrigger className="mt-1.5 rounded-xl text-[13px]" style={{ background: "var(--sp-bg-subtle)", border: "1px solid var(--sp-border)", color: "var(--sp-text)" }}>
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-zinc-900 border-zinc-700">
+              <SelectContent style={{ background: "var(--sp-surface)", border: "1px solid var(--sp-border)" }}>
                 {models[aiProvider]?.map((m) => (
-                  <SelectItem key={m.value} value={m.value} className="text-zinc-200">
-                    {m.label}
-                  </SelectItem>
+                  <SelectItem key={m.value} value={m.value} style={{ color: "var(--sp-text)" }}>{m.label}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      {/* Status */}
-      <Card className="bg-zinc-900/50 border-zinc-800">
-        <CardContent className="p-4">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
+      {/* Status bar */}
+      <div className="sp-surface rounded-2xl p-4 animate-fade-in-up stagger-2">
+        <div className="flex items-center gap-6">
+          {[
+            { label: "Shopify MCP", connected: shopifyConnected },
+            { label: "AI Provider", connected: aiConnected },
+          ].map((item) => (
+            <div key={item.label} className="flex items-center gap-2">
               <div
-                className={cn(
-                  "w-2 h-2 rounded-full",
-                  shopifyConnected ? "bg-emerald-400" : "bg-zinc-600"
-                )}
+                className="w-2 h-2 rounded-full transition-colors duration-300"
+                style={{ background: item.connected ? "var(--sp-accent)" : "var(--sp-text-muted)" }}
               />
-              <span className="text-xs text-zinc-400">Shopify MCP</span>
+              <span className="text-[12px] font-medium" style={{ color: "var(--sp-text-secondary)" }}>{item.label}</span>
             </div>
-            <div className="flex items-center gap-2">
-              <div
-                className={cn(
-                  "w-2 h-2 rounded-full",
-                  aiConnected ? "bg-emerald-400" : "bg-zinc-600"
-                )}
-              />
-              <span className="text-xs text-zinc-400">AI Provider</span>
-            </div>
-            <div className="ml-auto">
-              {shopifyConnected && aiConnected ? (
-                <Badge className="bg-emerald-500/10 text-emerald-400 border-0">
-                  <CheckCircle className="w-3 h-3 mr-1" />
-                  Ready to use
-                </Badge>
-              ) : (
-                <Badge className="bg-zinc-800 text-zinc-500 border-0">
-                  <AlertCircle className="w-3 h-3 mr-1" />
-                  Setup incomplete
-                </Badge>
-              )}
-            </div>
+          ))}
+          <div className="ml-auto">
+            {shopifyConnected && aiConnected ? (
+              <span className="flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full" style={{ color: "var(--sp-accent)", background: "var(--sp-accent-subtle)" }}>
+                <CheckCircle className="w-3 h-3" /> Ready to use
+              </span>
+            ) : (
+              <span className="flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full" style={{ color: "var(--sp-text-muted)", background: "var(--sp-accent-subtle)" }}>
+                <AlertCircle className="w-3 h-3" /> Setup incomplete
+              </span>
+            )}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

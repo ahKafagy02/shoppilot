@@ -1,26 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { products } from "@/data/mock-data";
-import { FileText, Sparkles, Check, Loader2, ArrowRight } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Sparkles, Check, Loader2 } from "lucide-react";
 
 const mockGeneratedDescriptions: Record<string, string> = {
-  prod_001:
-    "Experience pure audio bliss with our Wireless Noise-Cancelling Headphones. Featuring advanced ANC technology that blocks out 98% of ambient noise, premium 40mm drivers for crystal-clear sound, and an impressive 30-hour battery life. The ergonomic over-ear design with memory foam cushions ensures comfort during long listening sessions. Perfect for commuters, remote workers, and music lovers who demand the best.",
-  prod_002:
-    "Elevate your everyday wardrobe with our Organic Cotton T-Shirt. Crafted from 100% GOTS-certified organic cotton, this tee combines sustainability with comfort. The breathable, pre-shrunk fabric maintains its shape wash after wash, while the reinforced seams ensure lasting durability. Available in classic black — a versatile essential that pairs with anything.",
-  prod_003:
-    "Stay hydrated smarter with our Smart Water Bottle. The built-in LED temperature display shows your drink's exact temperature in real-time, while smart hydration reminders keep you on track throughout the day. The 750ml double-wall vacuum insulation keeps drinks cold for 24 hours or hot for 12. BPA-free, leak-proof, and designed to fit standard cup holders.",
-  prod_006:
-    "Brew cafe-quality coffee at home with our Ceramic Pour-Over Coffee Set. Each piece is handcrafted by skilled artisans, featuring a precision-engineered dripper with optimal flow rate for a smooth, full-bodied extraction. The set includes a matching 12oz ceramic mug with a comfortable handle. The clean, minimalist design makes it a beautiful addition to any kitchen.",
-  prod_007:
-    "Declutter your workspace with our Bamboo Desk Organizer. Sustainably sourced bamboo provides a warm, natural aesthetic while keeping your essentials within reach. Features 5 compartments for pens, cards, and supplies, plus an integrated phone stand with optimal viewing angle. The smooth, splinter-free finish protects your devices and documents.",
-  prod_010:
-    "Your perfect travel companion — our Stainless Steel Insulated Mug keeps coffee hot for 6 hours and iced drinks cold for 12. The double-wall vacuum insulation prevents condensation, while the spill-proof lid makes it safe for your bag. The 18/8 food-grade stainless steel won't retain flavors or odors. Fits most car cup holders.",
+  prod_001: "Experience pure audio bliss with our Wireless Noise-Cancelling Headphones. Featuring advanced ANC technology that blocks out 98% of ambient noise, premium 40mm drivers for crystal-clear sound, and an impressive 30-hour battery life.",
+  prod_002: "Elevate your everyday wardrobe with our Organic Cotton T-Shirt. Crafted from 100% GOTS-certified organic cotton, this tee combines sustainability with comfort. Breathable, pre-shrunk, and built to last.",
+  prod_003: "Stay hydrated smarter with our Smart Water Bottle. Built-in LED temperature display, smart hydration reminders, and 750ml double-wall vacuum insulation keeps drinks cold for 24 hours or hot for 12.",
+  prod_006: "Brew cafe-quality coffee at home with our Ceramic Pour-Over Coffee Set. Handcrafted with a precision-engineered dripper for a smooth, full-bodied extraction. Includes matching 12oz ceramic mug.",
+  prod_007: "Declutter your workspace with our Bamboo Desk Organizer. Sustainably sourced bamboo with 5 compartments and an integrated phone stand. Smooth, splinter-free finish.",
+  prod_010: "Your perfect travel companion — our Stainless Steel Insulated Mug keeps coffee hot for 6 hours and iced drinks cold for 12. Spill-proof lid, fits most car cup holders.",
 };
 
 type ProductStatus = "idle" | "generating" | "done";
@@ -28,9 +19,7 @@ type ProductStatus = "idle" | "generating" | "done";
 export function DescriptionGenerator() {
   const [statuses, setStatuses] = useState<Record<string, ProductStatus>>({});
   const [generated, setGenerated] = useState<Record<string, string>>({});
-  const [selectedProducts, setSelectedProducts] = useState<Set<string>>(
-    new Set()
-  );
+  const [selectedProducts, setSelectedProducts] = useState<Set<string>>(new Set());
 
   const toggleSelect = (id: string) => {
     setSelectedProducts((prev) => {
@@ -46,17 +35,9 @@ export function DescriptionGenerator() {
     await new Promise((r) => setTimeout(r, 1500 + Math.random() * 1000));
     setGenerated((prev) => ({
       ...prev,
-      [id]:
-        mockGeneratedDescriptions[id] ||
-        `Enhanced SEO-optimized description for ${products.find((p) => p.id === id)?.title}. This product stands out with its premium quality, exceptional craftsmanship, and outstanding value. Perfect for customers who appreciate the finer things in life. Order now and experience the difference.`,
+      [id]: mockGeneratedDescriptions[id] || `Enhanced SEO-optimized description for ${products.find((p) => p.id === id)?.title}. Premium quality with exceptional craftsmanship and outstanding value.`,
     }));
     setStatuses((prev) => ({ ...prev, [id]: "done" }));
-  };
-
-  const generateSelected = async () => {
-    for (const id of selectedProducts) {
-      await generateOne(id);
-    }
   };
 
   const generateAll = async () => {
@@ -65,138 +46,123 @@ export function DescriptionGenerator() {
     }
   };
 
+  const doneCount = Object.values(statuses).filter((s) => s === "done").length;
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {/* Actions bar */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Badge variant="secondary" className="bg-zinc-800 text-zinc-300">
+      <div className="flex items-center justify-between animate-fade-in-up">
+        <div className="flex items-center gap-3">
+          <span
+            className="text-[11px] font-bold px-2.5 py-1 rounded-lg"
+            style={{ color: "var(--sp-text-secondary)", background: "var(--sp-surface)", border: "1px solid var(--sp-border)" }}
+          >
             {selectedProducts.size} selected
-          </Badge>
-          <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-400">
-            {Object.values(statuses).filter((s) => s === "done").length} /
-            {products.length} generated
-          </Badge>
+          </span>
+          <span
+            className="text-[11px] font-bold px-2.5 py-1 rounded-lg"
+            style={{ color: "var(--sp-accent)", background: "var(--sp-accent-subtle)" }}
+          >
+            {doneCount}/{products.length} generated
+          </span>
         </div>
         <div className="flex items-center gap-2">
           <Button
             variant="outline"
             size="sm"
-            onClick={generateSelected}
+            onClick={async () => { for (const id of selectedProducts) await generateOne(id); }}
             disabled={selectedProducts.size === 0}
-            className="border-zinc-700 text-zinc-300 hover:bg-zinc-800"
+            className="rounded-xl text-[12px]"
+            style={{ border: "1px solid var(--sp-border)", color: "var(--sp-text-secondary)" }}
           >
-            <Sparkles className="w-3.5 h-3.5 mr-1.5" />
-            Generate Selected
+            <Sparkles className="w-3.5 h-3.5 mr-1.5" /> Generate Selected
           </Button>
           <Button
             size="sm"
             onClick={generateAll}
-            className="bg-emerald-600 hover:bg-emerald-500 text-white"
+            className="rounded-xl text-[12px] text-white shadow-sm"
+            style={{ background: "var(--sp-accent)" }}
           >
-            <Sparkles className="w-3.5 h-3.5 mr-1.5" />
-            Generate All
+            <Sparkles className="w-3.5 h-3.5 mr-1.5" /> Generate All
           </Button>
         </div>
       </div>
 
       {/* Products list */}
       <div className="space-y-3">
-        {products.map((product) => {
+        {products.map((product, i) => {
           const status = statuses[product.id] || "idle";
           const newDesc = generated[product.id];
+          const isSelected = selectedProducts.has(product.id);
 
           return (
-            <Card
+            <div
               key={product.id}
-              className={cn(
-                "bg-zinc-900/50 border-zinc-800 transition-colors",
-                selectedProducts.has(product.id) && "border-emerald-500/50"
-              )}
+              className="sp-surface sp-card-hover rounded-2xl p-4 animate-fade-in-up"
+              style={{
+                animationDelay: `${i * 0.04}s`,
+                borderColor: isSelected ? "var(--sp-accent)" : undefined,
+              }}
             >
-              <CardContent className="p-4">
-                <div className="flex items-start gap-4">
-                  {/* Checkbox */}
-                  <button
-                    onClick={() => toggleSelect(product.id)}
-                    className={cn(
-                      "w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 mt-1 transition-colors",
-                      selectedProducts.has(product.id)
-                        ? "bg-emerald-600 border-emerald-600"
-                        : "border-zinc-600 hover:border-zinc-400"
-                    )}
-                  >
-                    {selectedProducts.has(product.id) && (
-                      <Check className="w-3 h-3 text-white" />
-                    )}
-                  </button>
+              <div className="flex items-start gap-4">
+                {/* Checkbox */}
+                <button
+                  onClick={() => toggleSelect(product.id)}
+                  className="w-5 h-5 rounded-md flex items-center justify-center shrink-0 mt-0.5 transition-all duration-200"
+                  style={{
+                    background: isSelected ? "var(--sp-accent)" : "transparent",
+                    border: `2px solid ${isSelected ? "var(--sp-accent)" : "var(--sp-border-hover)"}`,
+                  }}
+                >
+                  {isSelected && <Check className="w-3 h-3 text-white" />}
+                </button>
 
-                  <div className="flex-1 min-w-0">
-                    {/* Product info */}
-                    <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-sm font-medium text-white">
-                        {product.title}
-                      </h3>
-                      <Badge
-                        variant="secondary"
-                        className="text-[10px] bg-zinc-800 text-zinc-400"
-                      >
-                        ${product.price}
-                      </Badge>
-                      {status === "done" && (
-                        <Badge className="text-[10px] bg-emerald-500/10 text-emerald-400 border-0">
-                          AI Enhanced
-                        </Badge>
-                      )}
-                    </div>
-
-                    {/* Current vs generated */}
-                    <div
-                      className={cn(
-                        "grid gap-3",
-                        newDesc ? "grid-cols-2" : "grid-cols-1"
-                      )}
-                    >
-                      <div className="p-3 rounded-lg bg-zinc-800/30 border border-zinc-700/30">
-                        <p className="text-[10px] font-medium text-zinc-500 mb-1">
-                          CURRENT
-                        </p>
-                        <p className="text-xs text-zinc-400 leading-relaxed">
-                          {product.description}
-                        </p>
-                      </div>
-                      {newDesc && (
-                        <div className="p-3 rounded-lg bg-emerald-500/5 border border-emerald-500/20">
-                          <p className="text-[10px] font-medium text-emerald-400 mb-1">
-                            AI GENERATED
-                          </p>
-                          <p className="text-xs text-zinc-300 leading-relaxed">
-                            {newDesc}
-                          </p>
-                        </div>
-                      )}
-                    </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-2">
+                    <h3 className="text-[13px] font-semibold" style={{ color: "var(--sp-text)" }}>
+                      {product.title}
+                    </h3>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-md" style={{ color: "var(--sp-text-muted)", background: "var(--sp-accent-subtle)" }}>
+                      ${product.price}
+                    </span>
+                    {status === "done" && (
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-md" style={{ color: "var(--sp-accent)", background: "var(--sp-accent-subtle)" }}>
+                        AI Enhanced
+                      </span>
+                    )}
                   </div>
 
-                  {/* Generate button */}
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => generateOne(product.id)}
-                    disabled={status === "generating"}
-                    className="shrink-0 text-zinc-400 hover:text-emerald-400"
-                  >
-                    {status === "generating" ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : status === "done" ? (
-                      <Check className="w-4 h-4 text-emerald-400" />
-                    ) : (
-                      <Sparkles className="w-4 h-4" />
+                  <div className={`grid gap-3 ${newDesc ? "grid-cols-2" : "grid-cols-1"}`}>
+                    <div className="p-3 rounded-xl" style={{ background: "var(--sp-bg-subtle)", border: "1px solid var(--sp-border)" }}>
+                      <p className="text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: "var(--sp-text-muted)" }}>Current</p>
+                      <p className="text-[12px] leading-relaxed" style={{ color: "var(--sp-text-secondary)" }}>{product.description}</p>
+                    </div>
+                    {newDesc && (
+                      <div className="p-3 rounded-xl" style={{ background: "var(--sp-accent-subtle)", border: "1px solid rgba(52,211,153,0.15)" }}>
+                        <p className="text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: "var(--sp-accent)" }}>AI Generated</p>
+                        <p className="text-[12px] leading-relaxed" style={{ color: "var(--sp-text)" }}>{newDesc}</p>
+                      </div>
                     )}
-                  </Button>
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
+
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => generateOne(product.id)}
+                  disabled={status === "generating"}
+                  className="shrink-0 w-8 h-8 rounded-xl"
+                >
+                  {status === "generating" ? (
+                    <Loader2 className="w-4 h-4 animate-spin" style={{ color: "var(--sp-accent)" }} />
+                  ) : status === "done" ? (
+                    <Check className="w-4 h-4" style={{ color: "var(--sp-accent)" }} />
+                  ) : (
+                    <Sparkles className="w-4 h-4" style={{ color: "var(--sp-text-muted)" }} />
+                  )}
+                </Button>
+              </div>
+            </div>
           );
         })}
       </div>
